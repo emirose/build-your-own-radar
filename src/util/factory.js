@@ -18,24 +18,26 @@ const SheetNotFoundError = require('../exceptions/sheetNotFoundError');
 const ContentValidator = require('./contentValidator');
 const Sheet = require('./sheet');
 const ExceptionMessages = require('./exceptionMessages');
+const data = require('../../data.json');
 
 
 const GoogleSheet = function (sheetReference, sheetName) {
     var self = {};
 
     self.build = function () {
-        var sheet = new Sheet(sheetReference);
-        sheet.exists(function(notFound) {
-            if (notFound) {
-                displayErrorMessage(notFound);
-                return;
-            }
-
-            Tabletop.init({
-                key: sheet.id,
-                callback: createRadar
-            });
-        });
+        // var sheet = new Sheet(sheetReference);
+        // sheet.exists(function(notFound) {
+        //     if (notFound) {
+        //         displayErrorMessage(notFound);
+        //         return;
+        //     }
+        //
+        //     Tabletop.init({
+        //         key: sheet.id,
+        //         callback: createRadar
+        //     });
+        // });
+        createRadar();
 
         function displayErrorMessage(exception) {
             d3.selectAll(".loading").remove();
@@ -65,18 +67,17 @@ const GoogleSheet = function (sheetReference, sheetName) {
             try {
 
                 if (!sheetName) {
-                    sheetName = tabletop.foundSheetNames[0];
+                    sheetName = 'Example Radar'
                 }
-                var columnNames = tabletop.sheets(sheetName).columnNames;
+                var columnNames = ['name', 'ring', 'quadrant', 'isNew', 'description'];
 
                 var contentValidator = new ContentValidator(columnNames);
                 contentValidator.verifyContent();
                 contentValidator.verifyHeaders();
 
-                var all = tabletop.sheets(sheetName).all();
-                var blips = _.map(all, new InputSanitizer().sanitize);
+                var blips = _.map(data, new InputSanitizer().sanitize);
 
-                document.title = tabletop.googleSheetName;
+                document.title = sheetName;
                 d3.selectAll(".loading").remove();
 
                 var rings = _.map(_.uniqBy(blips, 'ring'), 'ring');
@@ -157,7 +158,7 @@ const GoogleSheetInput = function () {
     self.build = function () {
         var queryParams = QueryParams(window.location.search.substring(1));
 
-        if (queryParams.sheetId) {
+        if (true) {
             var sheet = GoogleSheet(queryParams.sheetId, queryParams.sheetName);
             sheet.init().build();
         } else {
