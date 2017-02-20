@@ -4,5 +4,6 @@
   {"name": "PHP", "ring": "hold",	"quadrant": "languages & frameworks", 	"isNew": "TRUE"},
   {"name": "Correlation Headers", "ring": "adopt", "quadrant": "techniques", "isNew": "TRUE"},
   {"name": "Graceful Degradation", "ring": "adopt",	"quadrant": "techniques", "isNew": "TRUE"},
-  {"name": "Circuit Breaking", "ring": "adopt",	"quadrant": "techniques", 	"isNew": "TRUE"},
+  {"name": "webpack", "ring": "adopt",	"quadrant": "tools", 	"isNew": "TRUE"}
+
 ]
